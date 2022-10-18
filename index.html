@@ -1,0 +1,1493 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta name="google-site-verification" content="ftFOlJETX-2KNjaPh8W6s8lhigItRuu9fOmjHZZ0nY0" />
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <title>Demo Page of "Speech Synthesis with Mixed Emotions"</title>
+</head>
+<style type="text/css">
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  audio {
+    width: 100%;
+  }
+
+  thead>tr>th:first-child {
+    width: 96px;
+  }
+
+  @media (max-width: 767px) {
+    .big-screen {
+      display: none;
+    }
+  }
+
+  @media (min-width: 767px) {
+    .small-screen {
+      display: none;
+    }
+  }
+
+.line{  /* Describes only positioning behaviour */
+    display: block; /* Not important, but helpful in this case */
+    clear: both;    /* Not important, but helpful in this case */
+}
+
+.line__figure{ /* Describes only positioning behaviour */
+    float:left;
+}
+
+.figure{ /* Describes only view representation. */
+    display: block; /* Not important, but helpful in this case */
+}
+
+.figure__image{
+    background: lightgray;
+    width: 500px;
+    height: 450px;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+.caption {
+    text-align: center;
+}
+</style>
+
+<body>
+  <header class="header">
+    <div class="jumbotron bg-secondary text-center">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-12">
+            <h1><a class="text-light">Demo Page of "Mixed Emotion Modelling for Emotional Voice Conversion"</h1><br>
+             <font size=5><span style="color:#FFFFFF"> Kun Zhou<sup>1,2</sup>, Berrak Sisman<sup>2</sup> and Haizhou Li<sup>1,3</sup>       </br>
+             <font size=3><span style="color:#000000"> zhoukun@u.nus.edu &nbsp berraksisman@u.nus.edu &nbsp haizhou.li@nus.edu.sg
+             </font><font size=4> <br> <br> <sup>1</sup>  Dept. of Electrical and Computer Engineering, National University of Singapore, Singapore <br> <sup>2</sup>  Department of Electrical and Computer Engineering, The University of Texas at Dallas, Texas, U.S.A.  <br> <sup>3</sup>  The Chinese University of HongKong, Shenzhen, China </font>  </a>  
+            <p>
+              <div class="row">
+              </div>
+            </p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <div class="row" id="result">
+        <div class="col-md-12">
+                    <h2>-------------------------------->   Abstract   <---------------------------------</h2>
+          <br />
+       <font size="4">
+Emotional voice conversion (EVC) aims to convert the emotional state of an utterance from one to another while preserving the linguistic content and speaker identity. Current studies mostly focus on modelling the conversion between several specific emotion types. 
+Synthesizing mixed effects of emotions could help us to better imitate human emotions, and facilitate more natural human-computer interaction.
+In this research, for the first time, we formulate and study the research problem of mixed emotion synthesis for EVC. 
+We regard emotion styles as a series of emotion attributes that are learnt from a ranking-based support vector machine (SVM). Each attribute measures the degree of the relevance between the speech recordings belonging to different emotion types. We then incorporate those attributes into a sequence-to-sequence (seq2seq) emotional voice conversion framework. During the training, the framework does not only learn to characterize the input emotion style, but also quantify its relevance with other emotion types. At run-time, various emotion mixtures can be produced by manually defining the attributes. We conduct objective and subjective evaluations to validate our idea in terms of mixed emotion synthesis. We further build an emotion transition system as an application study. 
+                  <div class="big-screen">
+                    
+
+                  <p style="text-align:center;"> <font size=5><br>The codes of this paper are publicly available <a href="xxx">here</a>.<br></p></br>
+
+
+At run-time, we convert Neutral to four different emotion mixtures.
+
+We summarize our experiments as below:</p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;margin:0px auto;}
+.tg td{background-color:#fff;border-bottom-width:1px;border-color:#ccc;border-style:solid;border-top-width:1px;
+  border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;
+  word-break:normal;}
+.tg th{background-color:#f0f0f0;border-bottom-width:1px;border-color:#ccc;border-style:solid;border-top-width:1px;
+  border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;
+  padding:10px 5px;word-break:normal;}
+.tg .tg-bzci{font-size:20px;text-align:center;vertical-align:top}
+.tg .tg-p8sp{border-color:inherit;font-size:20px;text-align:center;vertical-align:top}
+.tg .tg-qv1k{background-color:#f9f9f9;border-color:inherit;font-size:20px;text-align:center;vertical-align:top}
+@media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;margin: auto 0px;}}</style>
+<div class="tg-wrap"><table class="tg">
+<tbody>
+  <tr>
+    <td class="tg-p8sp">Target Emotion (A)</td>
+    <td class="tg-p8sp">Adding Emotion (B)</td>
+    <td class="tg-p8sp">Mixed Effects (A+B)</td>
+  </tr>
+  <tr>
+    <td class="tg-qv1k">Happy</td>
+    <td class="tg-qv1k">Surprise</td>
+    <td class="tg-qv1k">Excitement</td>
+  </tr>
+  <tr>
+    <td class="tg-p8sp">Angry</td>
+    <td class="tg-p8sp">Surprise</td>
+    <td class="tg-p8sp">Outrage</td>
+  </tr>
+  <tr>
+    <td class="tg-qv1k">Sad</td>
+    <td class="tg-qv1k">Surprise</td>
+    <td class="tg-qv1k">Disappointment</td>
+  </tr>
+
+    <tr>
+    <td class="tg-qv1k">Happy</td>
+    <td class="tg-qv1k">Sad</td>
+    <td class="tg-qv1k">Bittersweet</td>
+  </tr>
+
+
+</tbody>
+</table></div>
+
+
+
+
+          <h2>---------------------------->   System Overview   <----------------------------</h2>
+          </br></br>
+
+</style>
+<article>
+    <section class='line'>
+        <figure class="line__figure figure">
+            <img src="./Figure/main_train.png" class="centerImage" alt="CH Logo" height="420" width="550" />
+           </br>
+            <div class="caption">Fig.1 Training Diagram.</div>
+        </figure>
+        <figure class="line__figure figure">
+            <img  src="./Figure/main_run.png" class="centerImage" alt="CH Logo" height="380" width="550" />
+             </br>
+            <div class="caption">Fig.2 Run-time Diagram.</div>
+        </figure>
+    </section>
+    <section class='line'>
+
+    </section>
+</article>
+</br>
+
+<h2>---------------------------->   Speech Samples <-----------------------------</h2>
+
+</br>
+
+                     <table class="table">
+                      <thead>
+                            <th colspan=7 style="color:blue;"><h4>(A) Converting Neutral to Outrage</h4></th>
+
+                        <tr>
+             
+                         <th colspan=7 style="color:black;"><h5>In this section, we convert Neutral to Angry while introducing different percentages (0%, 30%, 60%, 90%) of Surprise into the mixture. We aim to synthesize a mixed feeling of Outrage.</h5></th>
+                        </tr>
+                      <tbody>
+                                
+                                
+                                <tr>
+                                    
+                                    <th style="text-align:center;font-size:80%">   Source Neutral </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Angry </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Angry with 30% Surprise </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Angry with 60% Surprise </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Angry with 90% Surprise </th>
+                                    <th style="text-align:center;font-size:80%">   Ground-truth Angry </th>
+                                    <th style="text-align:center;font-size:80%">   Ground-truth Surprise</th>
+                 
+
+                                </tr>
+                                                                <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Neutral/0019_000010.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0/Mel_10.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.3/Mel_10.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.6/Mel_10.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.9/Mel_10.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry/0019_000360.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Surprise/0019_001410.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+
+                                                                   <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Neutral/0019_000006.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0/Mel_06.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.3/Mel_06.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.6/Mel_06.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.9/Mel_06.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                  
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry/0019_000356.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Surprise/0019_001406.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+
+                                <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Neutral/0019_000005.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0/Mel_05.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.3/Mel_05.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.6/Mel_05.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.9/Mel_05.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry/0019_000355.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Surprise/0019_001405.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+
+                                <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Neutral/0019_000009.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0/Mel_09.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.3/Mel_09.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.6/Mel_09.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.9/Mel_09.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry/0019_000359.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Surprise/0019_001409.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+
+                                <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Neutral/0019_000020.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0/Mel_20.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.3/Mel_20.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.6/Mel_20.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry_0.9/Mel_20.mel.npy_ref_Angry_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Angry/0019_000370.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_A/Surprise/0019_001420.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+
+
+
+
+
+                  
+                            
+
+
+                      </tbody>
+                       
+                   </table>
+                    
+
+
+   <table class="table">
+                      <thead>
+                            <th colspan=7 style="color:blue;"><h4>(B) Converting Neutral to Excitement</h4></th>
+
+                        <tr>
+             
+                         <th colspan=7 style="color:black;"><h5>In this section, we convert Neutral to Happy while introducing different percentages (0%, 30%, 60%, 90%) of Surprise into the mixture. We aim to synthesize a mixed feeling of Excitement.</h5></th>
+                        </tr>
+                      <tbody>
+                                
+                                
+                                <tr>
+                                    
+                                    <th style="text-align:center;font-size:80%">   Source Neutral </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Happy </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Happy with 30% Surprise </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Happy with 60% Surprise </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Happy with 90% Surprise </th>
+                                    <th style="text-align:center;font-size:80%">   Ground-truth Happy </th>
+                                    <th style="text-align:center;font-size:80%">   Ground-truth Surprise</th>
+                 
+
+                                </tr>
+                               <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Neutral/0019_000007.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0/Mel_07.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.3/Mel_07.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.6/Mel_07.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.9/Mel_07.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy/0019_000707.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Surprise/0019_001407.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                 <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Neutral/0019_000008.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0/Mel_08.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.3/Mel_08.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.6/Mel_08.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.9/Mel_08.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy/0019_000708.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Surprise/0019_001408.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                 <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Neutral/0019_000009.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0/Mel_09.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.3/Mel_09.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.6/Mel_09.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.9/Mel_09.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy/0019_000709.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Surprise/0019_001409.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                 <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Neutral/0019_000011.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0/Mel_11.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.3/Mel_11.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.6/Mel_11.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.9/Mel_11.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy/0019_000711.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Surprise/0019_001411.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                 <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Neutral/0019_000020.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0/Mel_20.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.3/Mel_20.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.6/Mel_20.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy_0.9/Mel_20.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Happy/0019_000720.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_B/Surprise/0019_001420.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                      </tbody>
+                       
+                   </table>
+
+
+                   <table class="table">
+                      <thead>
+                            <th colspan=7 style="color:blue;"><h4>(C) Converting Neutral to Disappointment</h4></th>
+
+                        <tr>
+             
+                         <th colspan=7 style="color:black;"><h5>In this section, we convert Neutral to Sad while introducing different percentages (0%, 30%, 60%, 90%) of Surprise into the mixture. We aim to synthesize a mixed feeling of Disappointment.</h5></th>
+                        </tr>
+                      <tbody>
+                                
+                                
+                                <tr>
+                                    
+                                    <th style="text-align:center;font-size:80%">   Source Neutral </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Sad </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Sad with 30% Surprise </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Sad with 60% Surprise </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Sad with 90% Surprise </th>
+                                    <th style="text-align:center;font-size:80%">   Ground-truth Sad </th>
+                                    <th style="text-align:center;font-size:80%">   Ground-truth Surprise</th>
+                
+
+                                </tr>
+                                <!-- single sentence -->
+                                                                 <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Neutral/0019_000008.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0/Mel_08.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.3/Mel_08.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.6/Mel_08.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.9/Mel_08.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad/0019_001058.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Surprise/0019_001408.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+
+                                   <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Neutral/0019_000009.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0/Mel_09.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.3/Mel_09.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.6/Mel_09.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.9/Mel_09.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad/0019_001059.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Surprise/0019_001409.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                   <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Neutral/0019_000010.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0/Mel_10.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.3/Mel_10.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.6/Mel_10.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.9/Mel_10.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad/0019_001060.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Surprise/0019_001410.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                     <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Neutral/0019_000012.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0/Mel_12.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.3/Mel_12.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.6/Mel_12.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.9/Mel_12.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad/0019_001062.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Surprise/0019_001412.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                     <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Neutral/0019_000020.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0/Mel_20.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.3/Mel_20.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.6/Mel_20.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad_0.9/Mel_20.mel.npy_ref_Sad_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                                                                   <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Sad/0019_001070.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_C/Surprise/0019_001420.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+
+
+                  
+                            
+
+
+                      </tbody>
+                       
+                   </table>
+                    
+
+                                       <table class="table">
+                      <thead>
+                            <th colspan=7 style="color:blue;"><h4>(D) Converting Neutral to Bittersweet</h4></th>
+
+                        <tr>
+             
+                         <th colspan=7 style="color:black;"><h5>In this section, we convert Neutral to Happy while introducing different percentages (0%, 30%, 60%, 90%) of Sad into the mixture. We aim to synthesize a mixed feeling of Bittersweet.</h5></th>
+                        </tr>
+                      <tbody>
+                                
+                                
+                                <tr>
+                                    
+                                    <th style="text-align:center;font-size:80%">   Source Neutral </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Happy </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Happy with 30% Sad </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Happy with 60% Sad </th>
+                                    <th style="text-align:center;font-size:80%">   Converted Happy with 90% Sad </th>
+                                    <th style="text-align:center;font-size:80%">   Ground-truth Happy </th>
+                                    <th style="text-align:center;font-size:80%">   Ground-truth Sad</th>
+                
+
+                                </tr>
+                                <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Neutral/0019_000004.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0/Mel_04.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.3/Mel_04.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.6/Mel_04.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.9/Mel_04.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy/0019_000704.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Sad/0019_001054.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                  <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Neutral/0019_000006.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0/Mel_06.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.3/Mel_06.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.6/Mel_06.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.9/Mel_06.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy/0019_000706.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Sad/0019_001056.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                  <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Neutral/0019_000009.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0/Mel_09.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.3/Mel_09.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.6/Mel_09.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.9/Mel_09.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy/0019_000709.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Sad/0019_001059.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                  <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Neutral/0019_000011.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0/Mel_11.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.3/Mel_11.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.6/Mel_11.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.9/Mel_11.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy/0019_000711.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Sad/0019_001061.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                  <!-- single sentence -->
+
+                                <tr>
+                                  
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Neutral/0019_000020.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0/Mel_20.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                  <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.3/Mel_20.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.6/Mel_20.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy_0.9/Mel_20.mel.npy_ref_Happy_VC.npy_gen.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+
+                                                                                                      <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Happy/0019_000720.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                
+                                  </td>
+
+                                                                    <td>
+                                    <audio controls>
+                                      <source src="./demo_page/Section_D/Sad/0019_001070.wav" type="audio/wav" />
+                                      Your browser does not support the audio element.
+                                    </audio>
+                                  </td>
+                  
+                            
+
+
+                      </tbody>
+                       
+                   </table>
+
+
+
+
+
+
+                  </div>
+                 
+        </div>
+      </div>
+      <hr>
+      <div class="row" id="ref">
+        <div class="col">
+          <!--<h2>References</h2>
+          
+         -->
+        </div>
+      </div>
+      <hr>
+      <!-- <div class="row" id="contact">
+          <div class="col">
+            <h2>Contact</h2>
+            <div></div>
+          </div>
+        </div> -->
+    </div>
+  </main>
+  <footer class="bg-secondary text-light mt-4 pt-3 pb-2 ">
+    <div class="container">
+      <p class="text-center">
+        
+      </p>
+    </div>
+  </footer>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
